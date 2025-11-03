@@ -1,0 +1,16 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+if SOC_E3_DK_RTSS_HE
+
+config SOC
+	default "ensemble"
+
+config NUM_IRQS
+	default 480
+
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+	default 160000000
+
+endif # SOC_E3_RTSS_HE

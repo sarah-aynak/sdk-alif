@@ -1,0 +1,36 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+choice
+	prompt "Alif Ensemble Family Selection"
+	depends on SOC_SERIES_ENSEMBLE_E1C
+
+config SOC_E1C_DK_RTSS_HE
+	bool "SOC_E1C_RTSS_HE"
+	select RTSS_HE
+	select CPU_CORTEX_M55
+	select CPU_HAS_ARM_MPU
+	select CPU_CORTEX_M_HAS_SYSTICK
+	select CPU_HAS_FPU
+	select ARMV8_M_DSP
+	select ARMV8_1_M_MVEI
+	select ARMV8_1_M_MVEF
+	select BUILD_NO_GAP_FILL
+	select CPU_HAS_ARM_SAU
+	select ARM_SECURE_FIRMWARE if DISPLAY
+endchoice
+
+config SOC_SERIES_ENSEMBLE
+	bool "Alif Ensemble Series"
+
+
+if (PM || POWEROFF)
+
+config PM_RTSS
+	bool
+	default y if (RTSS_HE)
+	help
+		Enable Power Management for RTSS cores
+
+endif

@@ -1,0 +1,68 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+choice
+	prompt "Alif Ensemble Family Selection"
+	depends on SOC_SERIES_ENSEMBLE_E3
+
+config SOC_E3_DK_RTSS_HE
+	bool "SOC_E3_RTSS_HE"
+	select RTSS_HE
+	select CPU_CORTEX_M55
+	select CPU_HAS_ARM_MPU
+	select CPU_CORTEX_M_HAS_SYSTICK
+	select CPU_HAS_FPU
+	select ARMV8_M_DSP
+	select ARMV8_1_M_MVEI
+	select ARMV8_1_M_MVEF
+
+config SOC_E3_DK_RTSS_HP
+	bool "SOC_E3_RTSS_HP"
+	select RTSS_HP
+	select CPU_CORTEX_M55
+	select CPU_HAS_ARM_MPU
+	select CPU_CORTEX_M_HAS_SYSTICK
+	select CPU_HAS_FPU
+	select ARMV8_M_DSP
+	select ARMV8_1_M_MVEI
+	select ARMV8_1_M_MVEF
+
+endchoice
+
+config SOC_SERIES_ENSEMBLE
+	bool "Alif Ensemble Series"
+
+if (PM || POWEROFF)
+
+config PM_RTSS
+	bool
+	default y if (RTSS_HE || RTSS_HP)
+	help
+		Enable Power Management for RTSS cores
+
+endif
+
+if COUNTER_SNPS_DW
+config LPTIMER2_OUTPUT_TOGGLE
+	bool "LPTimer2 Output Toggle"
+	help
+	  Enable lptimer 2 output toggle.
+
+config LPTIMER2_EXT_CLK_FREQ
+	int "LPTimer2 Ext-clock source Frequency value"
+	default 0
+	help
+	  Provide lptimer 2 clock frequency for external clock source.
+
+config LPTIMER3_OUTPUT_TOGGLE
+	bool "LPTimer3 Output Toggle"
+	help
+	  Enable lptimer 3 output toggle.
+
+config LPTIMER3_EXT_CLK_FREQ
+	int "LPTimer3 Ext-clock source Frequency value"
+	default 0
+	help
+	  Provide lptimer 3 clock frequency for external clock source.
+endif # COUNTER_SNPS_DW

@@ -1,0 +1,16 @@
+/* Copyright (c) 2024 Alif Semiconductor
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/*
+ * Enabling lptimer & disabling rtc for this sample application
+ */
+
+&timer0 {
+	status = "okay";
+};
+
+&rtc0 {
+	status = "disabled";
+};

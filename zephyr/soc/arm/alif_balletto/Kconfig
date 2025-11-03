@@ -1,0 +1,16 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_FAMILY_BALLETTO
+	bool "Alif Balletto family of SoC"
+	select HAS_SEGGER_RTT
+
+if SOC_FAMILY_BALLETTO
+
+config SOC_FAMILY
+	string
+	default "alif_balletto"
+
+source "soc/arm/alif_balletto/*/Kconfig.soc"
+endif # SOC_FAMILY_BALLETTO

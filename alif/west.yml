@@ -1,0 +1,82 @@
+# The west manifest file (west.yml) for the Alif SDK.
+#
+# The per-installation west configuration file, .west/config, sets the
+# path to the project containing this file in the [manifest] section's
+# "path" variable.
+#
+# See the west documentation for more information:
+# https://docs.zephyrproject.org/latest/develop/west/index.html
+
+manifest:
+  version: "0.13"
+
+  defaults:
+    remote: alif
+
+  remotes:
+    - name: alif
+      url-base: https://github.com/alifsemi
+    # Other repository sources:
+    - name: zephyrproject
+      url-base: https://github.com/zephyrproject-rtos
+    - name: armmbed
+      url-base: https://github.com/ARMmbed
+
+  #
+  # Please add items below based on alphabetical order
+  projects:
+
+    - name: zephyr
+      repo-path: zephyr_alif
+      revision: 0af7f7592ca20428d0f715bd7ca37f06c47b3840
+      import:
+        # In addition to the zephyr repository itself,
+        # Alif SDK fetches the needed projects
+        #
+        # Please keep this list sorted alphabetically.
+        name-allowlist:
+          - canopennode
+          - chre
+          - edtt
+          - fatfs
+          - hal_alif
+          - hal_ethos_u
+          - liblc3
+          - libmetal
+          - littlefs
+          - lvgl
+          - lz4
+          - mbedtls
+          - mipi-sys-t
+          - nanopb
+          - net-tools
+          - openthread
+          - picolibc
+          - psa-arch-tests
+          - segger
+          - tinycrypt
+          - tf-m-tests
+          - tflite-micro
+          - TraceRecorderSource
+          - uoscore-uedhoc
+          - zcbor
+          - zscilib
+          - cmsis-dsp
+    - name: matter
+      repo-path: matter_alif
+      revision: main
+      path: modules/lib/matter
+
+    - name: mcuboot_alif
+      repo-path: mcuboot_alif
+      path: bootloader/mcuboot
+      revision: main
+
+    - name: cmsis_alif
+      revision: 85f6b92af0f6ac72594d391f895c45cc30847e41
+      path: modules/hal/cmsis
+      groups:
+         - hal
+  self:
+    path: alif
+    west-commands: scripts/west-commands.yml
