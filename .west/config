@@ -1,0 +1,8 @@
+[manifest]
+path = alif
+file = west.yml
+group-filter = +optional
+
+[zephyr]
+base = zephyr
+
