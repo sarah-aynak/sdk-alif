@@ -1,0 +1,9 @@
+**/build/
+build*/
+.*project
+.settings
+.clang-format
+
+*.bkp
+*.orig
+*.pyc
