@@ -1,0 +1,53 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+choice
+	prompt "Alif Balletto Family Selection"
+	depends on SOC_SERIES_BALLETTO_B1
+
+config SOC_B1_DK_RTSS_HE
+	bool "SOC_B1_RTSS_HE"
+	select RTSS_HE
+	select CPU_CORTEX_M55
+	select SOC_SERIES_BALLETTO
+	select CPU_HAS_ARM_MPU
+	select CPU_CORTEX_M_HAS_SYSTICK
+	select CPU_HAS_FPU
+	select ARMV8_M_DSP
+	select ARMV8_1_M_MVEI
+	select ARMV8_1_M_MVEF
+	select BUILD_NO_GAP_FILL
+	select CPU_HAS_ARM_SAU
+	select ARM_SECURE_FIRMWARE if DISPLAY
+	select HAS_ALIF_BLE_802154_LINK_LAYER
+	select HAS_ALIF_BLE_ROM_IMAGE
+
+
+config SOC_B1_FPGA_RTSS_HE
+	bool "SOC_B1_RTSS_HE"
+	select RTSS_HE
+	select CPU_CORTEX_M55
+	select SOC_SERIES_BALLETTO
+	select CPU_HAS_ARM_MPU
+	select CPU_CORTEX_M_HAS_SYSTICK
+	select CPU_HAS_FPU
+	select ARMV8_M_DSP
+	select ARMV8_1_M_MVEI
+	select ARMV8_1_M_MVEF
+	select HAS_ALIF_BLE_802154_LINK_LAYER
+	select HAS_ALIF_BLE_ROM_IMAGE
+
+endchoice
+
+config SOC_SERIES_BALLETTO
+	bool "Alif Balletto Series"
+
+if (PM || POWEROFF)
+config PM_RTSS
+	bool
+	default y if (RTSS_HE)
+	help
+		Enable Power Management for RTSS cores
+
+endif

@@ -1,0 +1,21 @@
+menuconfig CMP
+	bool "Comparator(cmp) drivers"
+	# All platforms that implement the CMP driver are now required to
+	# provide relevant DTS entries.
+	help
+	  Enable cmp driver configuration.
+
+if CMP
+config CMP_INIT_PRIORITY
+	int "CMP init priority"
+	default 50
+	help
+	  CMP driver device initialization priority.
+
+module = CMP
+module-str = CMP
+source "subsys/logging/Kconfig.template.log_config"
+
+source "drivers/comparator/Kconfig.alif"
+
+endif

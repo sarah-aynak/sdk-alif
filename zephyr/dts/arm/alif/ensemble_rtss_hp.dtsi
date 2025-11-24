@@ -1,0 +1,78 @@
+/* Copyright (c) 2024 Alif Semiconductor
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+#include <arm/armv8.1-m.dtsi>
+#include <mem.h>
+&{/soc} {
+	itcm: itcm@0 {
+		compatible = "alif,itcm";
+		reg = <0x0 DT_SIZE_K(256)>;
+		itcm_global_base = <0x50000000>;
+		zephyr,memory-region = "ITCM";
+	};
+	dtcm: dtcm@20000000 {
+		compatible = "alif,dtcm";
+		reg = <0x20000000 DT_SIZE_K(1024)>;
+		dtcm_global_base = <0x50800000>;
+		zephyr,memory-region = "DTCM";
+	};
+	sram0: sram@2000000 {
+		compatible = "zephyr,memory-region","mmio-sram";
+		reg = <0x02000000 DT_SIZE_K(4096)>;
+		zephyr,memory-region = "SRAM0";
+	};
+	sram1: sram@8000000 {
+		compatible = "zephyr,memory-region","mmio-sram";
+		reg = <0x08000000 DT_SIZE_K(2560)>;
+		zephyr,memory-region = "SRAM1";
+	};
+	clocks {
+		rtss_hp_clk: rtss_hp_clk {
+			compatible = "fixed-clock";
+			clock-frequency = <400000000>;
+			#clock-cells = <0>;
+		};
+	};
+	wdog0: wdog0@40100000{
+		compatible = "arm,cmsdk-watchdog";
+		reg = <0x40100000 0x1000>;
+		clocks = <&rtss_hp_clk>;
+		status = "okay";
+	};
+	dma1: dma1@400c0000 {
+		compatible = "arm,dma-pl330";
+		reg = <0x400C0000 0x1000>;
+		reg-names = "pl330_regs";
+		dma-channels = <4>;
+		#dma-cells = <2>;
+		interrupt-parent = <&nvic>;
+		interrupts = <0 3>, <1 3>, <2 3>, <3 3>, <32 3>;
+		interrupt-names = "channel0", "channel1",
+						  "channel2", "channel3",
+						  "abort";
+		status = "disabled";
+	};
+};
+
+&{/} {
+	power-states {
+		off: off {
+			compatible = "zephyr,power-state";
+			power-state-name = "soft-off";
+			min-residency-us = < 300000000 >;
+		};
+	};
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-m55";
+			d-cache-line-size = <32>;
+			i-cache-line-size = <32>;
+			reg = <0>;
+			cpu-power-states = <&off>;
+		};
+	};
+};

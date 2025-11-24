@@ -1,0 +1,12 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+if SOC_SERIES_ENSEMBLE_E3
+
+config SOC_SERIES
+	default "e3"
+
+source "soc/arm/alif_ensemble/e3/Kconfig.defconfig.e*"
+
+endif # SOC_SERIES_ENSEMBLE_E3

@@ -1,0 +1,10 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+if ALIF_E3_DK_BOARD
+
+config BOARD
+	default "alif_e3_devkit"
+
+endif # ALIF_E3_DEVKIT

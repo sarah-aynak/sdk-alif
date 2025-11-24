@@ -1,0 +1,63 @@
+# Copyright (C) 2024 Alif Semiconductor.
+# SPDX-License-Identifier: Apache-2.0
+
+description: Synopsys Designware OSPI controller
+
+compatible: "snps,designware-ospi"
+
+include: [base.yaml, pinctrl-device.yaml]
+
+properties:
+  reg:
+    required: true
+
+  interrupts:
+    required: true
+
+  pinctrl-0:
+    required: true
+
+  pinctrl-names:
+    required: true
+
+  aes-reg:
+    type: array
+    description: register space
+    required: true
+
+  bus-speed:
+    type: int
+    description: speed
+    default: 1000000
+
+  cs-pin:
+    type: int
+    description: slave connected pin
+    required: true
+
+  ddr-drive-edge:
+    type: boolean
+    description: Enable/Disable Tx Dual Data Rate
+
+  rx-ds-delay:
+    type: int
+    description: receive datastrobe delay
+    default: 16
+
+  tx-fifo-threshold:
+    type: int
+    description: transmit fifo threshold
+    default: 128
+
+  xip-wait-cycles:
+    type: int
+    description: waitcycles on XiP transaction
+    default: 16
+
+  xip-rxds-vl-en:
+    type: boolean
+    description: Enable/Disable RXDS Variable Latency on XiP transaction
+
+  xip-base-address:
+    type: array
+    description: XiP memory address range

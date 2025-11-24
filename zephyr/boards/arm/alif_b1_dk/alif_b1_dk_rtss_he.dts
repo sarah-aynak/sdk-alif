@@ -1,0 +1,78 @@
+/* Copyright (c) 2024 Alif Semiconductor
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/dts-v1/;
+
+#include <alif/balletto_rtss_common.dtsi>
+#include <alif/balletto-pinctrl.dtsi>
+
+/ {
+	compatible = "arm,alif-b1-dk-rtss-he";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+};
+&ieee802154 {
+	status = "okay";
+};
+
+&{/} {
+	chosen {
+		zephyr,console = &uart2;
+		zephyr,shell-uart = &uart2;
+		zephyr,bt-uart = &uart_hci;
+	};
+
+	aliases {
+		led0 = &aled0;
+		pwm-led0 = &pwm_ut2;
+		sw0 = &button0;
+	};
+	pwmleds {
+		compatible = "pwm-leds";
+		pwm_ut2: pwm_ut2 {
+			pwms = <&pwm2 0 PWM_MSEC(20) PWM_POLARITY_NORMAL>;
+			label = "UT2 PWM";
+		};
+	};
+	buttons {
+		compatible = "gpio-keys";
+		button0: button_0 {
+			gpios = < &gpio5 7 0 >;
+			label = "SW0";
+		};
+	};
+	ext_flash_xip: memory@b0000000 {
+		compatible = "zephyr,memory-region";
+		reg = <0xb0000000 DT_SIZE_M(64)>;
+		zephyr,memory-region = "OSPI0";
+	};
+};
+
+&uart2 {
+	status = "okay";
+};
+
+&uart_hci {
+	clock-frequency = <160000000>;
+	dlf = <0>;
+};
+
+&uart_ahi {
+	clock-frequency = <160000000>;
+	dlf = <0>;
+	pinctrl-0 = < &pinctrl_ahi_trace >;
+	pinctrl-names = "default";
+};
+
+&utimer2 {
+	driver-enable = < ALIF_UTIMER_DRIVER_B_OUTPUT_ENABLE >;
+	status = "okay";
+
+	pwm2: pwm {
+		pinctrl-0 = < &pinctrl_ut2 >;
+		pinctrl-names = "default";
+		status = "okay";
+	};
+};

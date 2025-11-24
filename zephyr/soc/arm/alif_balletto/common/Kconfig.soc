@@ -1,0 +1,145 @@
+# Copyright (c) 2024 Alif Semiconductor
+#
+# SPDX-License-Identifier: Apache-2.0
+
+config RTSS_HE
+	bool "RTSS_HE core"
+	help
+	  Enable RTSS_HE core.
+
+config HAS_ALIF_BLE_802154_LINK_LAYER
+	bool
+	default y
+	help
+	  Device has BLE and 802154 Link Layers
+
+if HAS_ALIF_BLE_802154_LINK_LAYER
+choice ALIF_BLE_802154_LINK_LAYER_VERSION
+	prompt "Chooce ROM code version"
+	default ALIF_BLE_802154_LINK_LAYER_V1_0
+
+	config ALIF_BLE_802154_LINK_LAYER_V1_0
+		bool "ROM code version 1.0"
+	config ALIF_BLE_802154_LINK_LAYER_V1_2
+		bool "ROM code version 1.2"
+endchoice
+endif
+
+config HAS_ALIF_BLE_ROM_IMAGE
+	bool
+	help
+	  Device has BLE HOST and LC3 ROM code
+
+if HAS_ALIF_BLE_ROM_IMAGE
+choice ALIF_BLE_ROM_IMAGE_VERSION
+	prompt "Chooce ROM code version"
+	default ALIF_BLE_ROM_IMAGE_V1_0
+
+	config ALIF_BLE_ROM_IMAGE_V1_0
+		bool "ROM code version 1.0"
+	config ALIF_BLE_ROM_IMAGE_V1_2
+		bool "ROM code version 1.2"
+endchoice
+endif
+
+config HAS_ALIF_SE_SERVICES
+	bool
+	default y
+	help
+	  Device has Secure Enclave services
+
+config HAS_ALIF_POWER_MANAGER
+	bool
+	depends on HAS_ALIF_SE_SERVICES
+	default y
+	help
+	  Device has Alif Power Manager services
+
+config ARM_MHUV2_INIT_PRIORITY
+	int "MHUv2 Init priority"
+	depends on ARM_MHUV2
+	default 40
+	help
+	  MHUv2 driver initialization priority.
+
+config ALIF_HWSEM_INIT_PRIORITY
+	int "HWSEM Init priority"
+	depends on ALIF_HWSEM
+	default 50
+	help
+	  Hardware Semaphore driver initialization priority.
+
+config SOC_SUPPORT_ARM_MHUV2
+	bool "SoC support communication through Arm MHUv2"
+	select IPM
+	select ARM_MHUV2
+	help
+	  SoC support communication through Arm MHUv2
+
+config SPI_DW_ENABLE
+	bool "SPI DW"
+	default y
+	depends on SPI
+	help
+	  Enable Designware SPI driver.
+	select SPI_DW
+
+if COUNTER_SNPS_DW
+config LPTIMER0_OUTPUT_TOGGLE
+	bool "LPTimer0 Output Toggle"
+	help
+	  Enable lptimer 0 output toggle.
+
+config LPTIMER0_EXT_CLK_FREQ
+	int "LPTimer0 Ext-clock source Frequency value"
+	default 0
+	help
+	  Provide lptimer 0 clock frequency for external clock source.
+
+config LPTIMER1_OUTPUT_TOGGLE
+	bool "LPTimer1 Output Toggle"
+	help
+	  Enable  lptimer 1 output toggle.
+
+config LPTIMER1_EXT_CLK_FREQ
+	int "LPTimer1 Ext-clock source Frequency value"
+	default 0
+	help
+	  Provide lptimer 1 clock frequency for external clock source.
+endif # COUNTER_SNPS_DW
+
+choice BT_HCI_BUS_TYPE
+	default BT_ALIF
+endchoice
+
+choice BT_RECV_CONTEXT
+	default BT_RECV_BLOCKING
+endchoice
+
+# Use HW entropy for seed Xoshiro128 pseudo random generator
+choice RNG_GENERATOR_CHOICE
+	default XOSHIRO_RANDOM_GENERATOR
+endchoice
+
+# Use HW entropy for seed CTR-DRBG
+choice CSPRNG_GENERATOR_CHOICE
+	default CTR_DRBG_CSPRNG_GENERATOR
+endchoice
+
+config FLASH_SIZE
+	default $(dt_node_reg_size_int,$(dt_nodelabel_path,itcm),0,K) if !XIP
+
+config FLASH_BASE_ADDRESS
+	default $(dt_node_reg_addr_hex,$(dt_nodelabel_path,itcm))     if !XIP
+
+config  NONSECURE0_REGION
+	string
+	default "NS" if ARM_SECURE_FIRMWARE && $(dt_nodelabel_enabled,ns)
+	help
+	    Provide config Non-Secure region
+
+config OSPI0_XIP_REGION
+	string
+	default "ospi0" if $(dt_nodelabel_enabled,ospi0)
+	help
+	    Configure OSPI0 XIP memory mapped region name

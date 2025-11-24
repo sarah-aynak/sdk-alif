@@ -1,0 +1,26 @@
+# Alif Camera controller driver configuration options
+
+# Copyright (C) 2024 Alif Semiconductor
+# SPDX-License-Identifier: Apache-2.0
+
+config VIDEO_ALIF_CAM
+	bool "Camera Parallel Interface (CPI) controller driver"
+	default y
+	depends on DT_HAS_ALIF_CAM_ENABLED
+
+if VIDEO_ALIF_CAM
+
+module = VIDEO
+module-str = video
+source "subsys/logging/Kconfig.template.log_config"
+
+config VIDEO_ALIF_CAM_INIT_PRIORITY
+	int "CPI Video initialization priority"
+	default 61
+	help
+	 System initialization priority for Alif Camera Driver.
+
+config FB_USES_DTCM_REGION
+	bool "CPI uses DTCM region for buffers"
+
+endif #VIDEO_ALIF_CAM
